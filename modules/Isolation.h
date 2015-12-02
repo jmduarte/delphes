@@ -49,14 +49,23 @@ public:
   void Finish();
 
 private:
-
+  
   Double_t fDeltaRMax;
+  
+  Double_t Iso_p0;//CMS Iso constant term EB
+  
+  Double_t Iso_p1;//CMS Iso linear term in pt EB
+  
+  Double_t Iso_p0_ee;//CMS Iso constant term EB
 
+  Double_t Iso_p1_ee;//CMS Iso linear term in pt EB
+  
   Double_t fPTRatioMax;
 
   Double_t fPTSumMax;
 
   Bool_t fUsePTSum;
+  Bool_t fUseLooseID;
 
   IsolationClassifier *fClassifier; //!
 

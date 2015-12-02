@@ -102,12 +102,25 @@ void Isolation::Init()
 
   fDeltaRMax = GetDouble("DeltaRMax", 0.5);
 
+  Iso_p0 = GetDouble("Iso_p0", 2.6);
+  Iso_p1 = GetDouble("Iso_p1", 0);
+  
+  Iso_p0_ee = GetDouble("Iso_p0_ee", 2.3);
+  Iso_p1_ee = GetDouble("Iso_p1_ee", 0);
+    
+  std::cout << "Iso_p0: " << Iso_p0 << std::endl;
+  std::cout << "Iso_p1: " << Iso_p1 << std::endl;
+  std::cout << "Iso_p0_ee: " << Iso_p0_ee << std::endl;
+  std::cout << "Iso_p1_ee: " << Iso_p1_ee << std::endl;
+  
   fPTRatioMax = GetDouble("PTRatioMax", 0.1);
 
   fPTSumMax = GetDouble("PTSumMax", 5.0);
 
   fUsePTSum = GetBool("UsePTSum", false);
-
+  std::cout << "UsePTSum: " << fUsePTSum << std::endl;
+  fUseLooseID = GetBool("UseLooseID", false);
+  std::cout << "UseLooseID: " << fUseLooseID << std::endl;
   fClassifier->fPTMin = GetDouble("PTMin", 0.5);
 
   // import input array(s)
@@ -231,7 +244,16 @@ void Isolation::Process()
       }
     }
 
-     // correct sum for pile-up contamination
+    double IsoCut;
+    if ( fabs( candidateMomentum.Eta() ) < 1.488 )
+      {
+	IsoCut = Iso_p0 + Iso_p1*candidateMomentum.Pt();
+      }
+    else
+      {
+	IsoCut = Iso_p0_ee + Iso_p1_ee*candidateMomentum.Pt();
+      }
+    // correct sum for pile-up contamination
     sumDBeta = sumCharged + TMath::Max(sumNeutral-0.5*sumChargedPU,0.0);
     sumRhoCorr = sumCharged + TMath::Max(sumNeutral-TMath::Max(rho,0.0)*fDeltaRMax*fDeltaRMax*TMath::Pi(),0.0);
     ratioDBeta = sumDBeta/candidateMomentum.Pt();
@@ -243,8 +265,24 @@ void Isolation::Process()
     candidate->SumPtNeutral = sumNeutral;
     candidate->SumPtChargedPU = sumChargedPU;
     candidate->SumPt = sumAllParticles;
-
-    if((fUsePTSum && sumDBeta > fPTSumMax) || (!fUsePTSum && ratioDBeta > fPTRatioMax)) continue;
+    //std::cout << "IsoCut: " << IsoCut << " sumDBeta: " << sumDBeta << std::endl;
+    //if((fUsePTSum && sumDBeta > fPTSumMax) || (!fUsePTSum && ratioDBeta > fPTRatioMax) || (fUseLooseID && sumDBeta > IsoCut)) continue;
+    if ( fUsePTSum && !fUseLooseID && sumDBeta > fPTSumMax )
+      {
+	//std::cout << "fUsePTSum Iso failed, removing" << std::endl;
+	continue;
+      }
+    else if ( fUseLooseID && !fUsePTSum && sumDBeta > IsoCut )
+      {
+	//std::cout << "fUseLooseID Iso failed, removing" << std::endl;
+	continue;
+      }
+    else if ( !fUsePTSum && ratioDBeta > fPTRatioMax )
+      {
+	//std::cout << "Default Relative Iso failed, removing" << std::endl;
+	continue;
+      }
+    
     fOutputArray->Add(candidate);
   }
 }
