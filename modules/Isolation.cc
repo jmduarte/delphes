@@ -263,10 +263,7 @@ void Isolation::Process()
       {
 	IsoCut = Iso_p0_ee + Iso_p1_ee*candidateMomentum.Pt();
       }
-    // correct sum for pile-up contamination
-    sumDBeta = sumCharged + TMath::Max(sumNeutral-0.5*sumChargedPU,0.0);
-    sumRhoCorr = sumCharged + TMath::Max(sumNeutral-TMath::Max(rho,0.0)*fDeltaRMax*fDeltaRMax*TMath::Pi(),0.0);
-
+    
     // correct sum for pile-up contamination
     sumDBeta = sumChargedNoPU + TMath::Max(sumNeutral - 0.5*sumChargedPU, 0.0);
     sumRhoCorr = sumChargedNoPU + TMath::Max(sumNeutral - TMath::Max(rho, 0.0)*fDeltaRMax*fDeltaRMax*TMath::Pi(), 0.0);
