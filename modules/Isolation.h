@@ -67,6 +67,8 @@ private:
   Bool_t fUsePTSum;
   Bool_t fUseLooseID;
 
+  Bool_t fUseRhoCorrection;
+
   IsolationClassifier *fClassifier; //!
 
   ExRootFilter *fFilter;

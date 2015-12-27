@@ -1,8 +1,28 @@
+3.3.2:
+- added pre-validated card for CMS upgrade Phase II studies
+- added TrackCountingTauTagging module (a la CheckMate)
+- updated tau-tagging efficiency according to ATL-PHYS-PUB-2015-045
+
+3.3.1:
+- corrected light parton mistag rate in b-tagging formula for CMS and ILD cards
+- added tracks to output in ILD card to enable root2lhco conversion
+- fixed muon collection in ILD card
+- added example for pileup generation with Pythia8
+- moved to loose isolation working points for ATLAS and CMS cards
+- added UseRhoCorrection switch to decide which isolation variable use for selection (true by default)
+- switch to Rapidity selector (SelectorRapRange) for pile-up density computation in FastJet to ensure backward compatibility
+- addressed N-subjettiness warnings in 2.2.1 version
+
 3.3.0:
-- updated FastJet library to 3.1.2
+- improved energy-flow algorithm for high momentum
+- updated b-tagging parameterisations to recent ATLAS and CMS publications
+- updated FastJet library to 3.1.3
+- updated Nsubjettiness library to 2.2.1
 - added a detector card for the ILD detector (for ILC)  based on http://arxiv.org/abs/1306.6329
 - adapted examples, EventDisplay, DelphesFormula and DelphesTF2 to ROOT 6.04
 - fixed tau-tagging for events without tau (thanks to Sho Iwamoto)
+- fixed UniqueObjectFinder (#728)
+- added JetFakeParticle module
 - added PhotonConversions module
 - added TaggingParticlesSkimmer module
 - added phi and energy dependence to AngularSmearing, BTagging, Efficiency, EnergyScale, EnergySmearing, IdentificationMap, ImpactParameterSmearing and MomentumSmearing
@@ -19,7 +39,7 @@
 - added Trimming, Pruning and SoftDrop to FastJetFinder
 - added possibility to use DelphesPythia8 with LHE files
 - added Pythia8 examples
-- added JetFlavourAssociation module with Physics and Algorithmic definitions of the jet flavor
+- added JetFlavorAssociation module with Physics and Algorithmic definitions of the jet flavor
 - added new jet flavor definitions to the BTagging module (available only when running DelphesPythia8 with LHE files)
 
 3.2.0:
